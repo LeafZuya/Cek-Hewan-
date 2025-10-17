@@ -1,4 +1,3 @@
-# Cek-Hewan-
 <!doctype html>
 <html lang="id">
 <head>
@@ -7,105 +6,114 @@
 <title>Cek Hewan Dalam Jiwa — LeafZuya</title>
 <link rel="icon" href="Favicon.png" />
 <style>
-  :root{
-    --g1:#00c16b; --g2:#27a2ff; --r1:#ff6b6b; --yellow: #ffd54d;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0; font-family:Inter, "Poppins", Arial, sans-serif;
-    min-height:100vh;
-    background: radial-gradient(circle at 20% 20%, rgba(255,255,200,0.06), transparent 10%),
-                linear-gradient(135deg, var(--g1), var(--g2), var(--r1));
-    display:flex; align-items:center; justify-content:center;
-    padding:28px;
-    color:#033;
-    overflow:hidden;
-  }
+ :root{
+  --g1:#00c16b; --g2:#27a2ff; --r1:#ff6b6b; --yellow: #ffd54d;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html, body{width:100%; height:100%;}
 
-  .card{
-    width:960px; max-width:98%;
-    background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.88));
-    border-radius:20px; padding:18px; box-shadow:0 20px 60px rgba(0,0,0,0.18);
-    display:grid; grid-template-columns: 1fr 420px; gap:18px; align-items:start;
-  }
+body{
+  font-family:Inter, "Poppins", Arial, sans-serif;
+  min-height:100vh;
+  background: radial-gradient(circle at 20% 20%, rgba(255,255,200,0.06), transparent 10%),
+              linear-gradient(135deg, var(--g1), var(--g2), var(--r1));
+  display:flex; align-items:center; justify-content:center;
+  color:#033;
+  overflow-x:hidden; /* ✅ biar tidak bisa geser kanan-kiri */
+  overflow-y:auto; /* ✅ tetap bisa scroll vertikal */
+  padding: clamp(12px, 4vw, 28px); /* ✅ auto adaptif untuk semua layar */
+}
 
-  /* left: form + result area */
-  .left{
-    padding:12px 18px;
-  }
-  h1{ margin:0 0 8px 0; font-size:24px; color:#053; text-shadow:0 2px 8px rgba(0,0,0,0.06)}
-  p.lead{ margin:6px 0 16px 0; color:#156; }
+/* Kartu utama */
+.card{
+  width:960px; max-width:96%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.88));
+  border-radius:20px;
+  padding:18px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.18);
+  display:grid;
+  grid-template-columns: 1fr 420px;
+  gap:18px;
+  align-items:start;
+  margin:auto; /* ✅ pastikan tetap di tengah */
+  position:relative;
+}
 
-  label{ display:block; margin:8px 0 6px; font-weight:600; color:#045}
-  input[type="text"], input[type="number"], select{
-    width:100%; padding:10px 12px; border-radius:10px; border:1px solid #d6eaf0; font-size:14px;
-    background: #fff;
-  }
+/* left: form + result area */
+.left{ padding:12px 18px; }
+h1{ margin:0 0 8px 0; font-size:24px; color:#053; text-shadow:0 2px 8px rgba(0,0,0,0.06)}
+p.lead{ margin:6px 0 16px 0; color:#156; }
 
-  .controls-row{ display:flex; gap:10px; margin-top:12px; align-items:center; flex-wrap:wrap;}
-  .btn {
-    background: linear-gradient(135deg,var(--g1),var(--g2)); color:white;
-    border:none; padding:10px 16px; border-radius:12px; cursor:pointer; font-weight:700;
-    box-shadow:0 10px 20px rgba(0,0,0,0.12);
-  }
-  .btn.secondary{
-    background:linear-gradient(135deg,#fff,#f4f8ff); color:#045; border:1px solid rgba(0,0,0,0.06);
-  }
+label{ display:block; margin:8px 0 6px; font-weight:600; color:#045}
+input[type="text"], input[type="number"], select{
+  width:100%; padding:10px 12px; border-radius:10px; border:1px solid #d6eaf0; font-size:14px;
+  background: #fff;
+}
 
-  /* right: preview area */
-  .right{
-    padding:12px 18px; display:flex; align-items:center; justify-content:center; position:relative;
-    min-height:320px;
-  }
-  .preview-stage{
-    width:360px; height:360px; border-radius:18px; background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8));
-    box-shadow: inset 0 6px 30px rgba(0,0,0,0.04);
-    position:relative; overflow:visible; display:flex; align-items:center; justify-content:center;
-  }
+.controls-row{ display:flex; gap:10px; margin-top:12px; align-items:center; flex-wrap:wrap;}
+.btn {
+  background: linear-gradient(135deg,var(--g1),var(--g2)); color:white;
+  border:none; padding:10px 16px; border-radius:12px; cursor:pointer; font-weight:700;
+  box-shadow:0 10px 20px rgba(0,0,0,0.12);
+}
+.btn.secondary{
+  background:linear-gradient(135deg,#fff,#f4f8ff); color:#045; border:1px solid rgba(0,0,0,0.06);
+}
 
-  /* floating result bubble */
-  .result-bubble{
-    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) scale(0.96);
-    min-width:240px; max-width:86%;
-    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,240,0.98));
-    border-radius:18px; padding:18px; text-align:center;
-    box-shadow:0 12px 30px rgba(0,0,0,0.18);
-    transition: transform .35s cubic-bezier(.2,.9,.3,1), opacity .25s;
-    opacity:0;
-  }
-  .result-bubble.show{ opacity:1; transform: translate(-50%,-50%) scale(1); }
+/* right: preview area */
+.right{
+  padding:12px 18px; display:flex; align-items:center; justify-content:center; position:relative;
+  min-height:320px;
+}
+.preview-stage{
+  width:360px; height:360px; border-radius:18px; background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8));
+  box-shadow: inset 0 6px 30px rgba(0,0,0,0.04);
+  position:relative; overflow:visible; display:flex; align-items:center; justify-content:center;
+}
 
-  .animal-emoji{ font-size:72px; display:block; margin-bottom:8px; filter: drop-shadow(0 8px 18px rgba(0,0,0,0.12)); }
-  .animal-name{ font-size:20px; font-weight:800; color:#062; margin-bottom:6px; }
-  .result-sub{ font-size:14px; color:#045; opacity:0.95; }
+/* floating result bubble */
+.result-bubble{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) scale(0.96);
+  min-width:240px; max-width:86%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,240,0.98));
+  border-radius:18px; padding:18px; text-align:center;
+  box-shadow:0 12px 30px rgba(0,0,0,0.18);
+  transition: transform .35s cubic-bezier(.2,.9,.3,1), opacity .25s;
+  opacity:0;
+}
+.result-bubble.show{ opacity:1; transform: translate(-50%,-50%) scale(1); }
 
-  /* decorations floating (leaf/flower/ice) */
-  .decor{
-    position:absolute; width:64px; height:64px; background-size:contain; background-repeat:no-repeat; opacity:0.95;
-    animation: floaty 4s infinite ease-in-out;
-  }
-  .d-leaf{ top:12px; right:12px; background-image:url('https://cdn-icons-png.flaticon.com/512/4765/4765549.png'); transform:rotate(-10deg)}
-  .d-flower{ bottom:12px; right:40px; background-image:url('https://cdn-icons-png.flaticon.com/512/616/616408.png'); transform:rotate(8deg); animation-duration:5s}
-  .d-ice{ bottom:14px; left:12px; background-image:url('https://cdn-icons-png.flaticon.com/512/1170/1170627.png'); transform:rotate(-6deg); animation-duration:4.5s}
-  @keyframes floaty{
-    0%,100%{ transform: translateY(0) rotate(0deg); }
-    50%{ transform: translateY(-12px) rotate(6deg); }
-  }
+.animal-emoji{ font-size:72px; display:block; margin-bottom:8px; filter: drop-shadow(0 8px 18px rgba(0,0,0,0.12)); }
+.animal-name{ font-size:20px; font-weight:800; color:#062; margin-bottom:6px; }
+.result-sub{ font-size:14px; color:#045; opacity:0.95; }
 
-  /* helper note */
-  .note{ margin-top:10px; font-size:13px; color:#155; }
+/* decorations floating (leaf/flower/ice) */
+.decor{
+  position:absolute; width:64px; height:64px; background-size:contain; background-repeat:no-repeat; opacity:0.95;
+  animation: floaty 4s infinite ease-in-out;
+}
+.d-leaf{ top:12px; right:12px; background-image:url('https://cdn-icons-png.flaticon.com/512/4765/4765549.png'); transform:rotate(-10deg)}
+.d-flower{ bottom:12px; right:40px; background-image:url('https://cdn-icons-png.flaticon.com/512/616/616408.png'); transform:rotate(8deg); animation-duration:5s}
+.d-ice{ bottom:14px; left:12px; background-image:url('https://cdn-icons-png.flaticon.com/512/1170/1170627.png'); transform:rotate(-6deg); animation-duration:4.5s}
+@keyframes floaty{
+  0%,100%{ transform: translateY(0) rotate(0deg); }
+  50%{ transform: translateY(-12px) rotate(6deg); }
+}
 
-  /* responsive */
-  @media(max-width:980px){
-    .card{ grid-template-columns: 1fr; }
-    .right{ order:-1; margin-bottom:12px }
-  }
+/* helper note */
+.note{ margin-top:10px; font-size:13px; color:#155; }
 
-  /* glow yellow outline for highlight effect */
-  .glow{
-    box-shadow: 0 8px 40px rgba(255,215,77,0.28), 0 2px 6px rgba(255,240,150,0.12) !important;
-    border: 1px solid rgba(255,215,77,0.18);
-  }
+/* responsive */
+@media(max-width:980px){
+  .card{ grid-template-columns: 1fr; }
+  .right{ order:-1; margin-bottom:12px }
+}
+
+/* glow yellow outline for highlight effect */
+.glow{
+  box-shadow: 0 8px 40px rgba(255,215,77,0.28), 0 2px 6px rgba(255,240,150,0.12) !important;
+  border: 1px solid rgba(255,215,77,0.18);
+}
 </style>
 </head>
 <body>
