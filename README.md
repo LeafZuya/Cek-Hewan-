@@ -253,7 +253,7 @@
     
     <div class="container">
         <h1>Cek Hewan Dalam Jiwa(~By LeafZuya)</h1>
-        <p class="subtitle">Temukan hewan yang mencerminkan jiwa Kamu!</p>
+        <p class="subtitle">Temukan hewan yang mencerminkan jiwa Kamu!(Data yang Kamu Masukkan,tidak Akan disimpan Permanen, karena Ini Hanya Bersifat Sementara 🗿🙏)</p>
         
         <div class="input-section">
             <div class="input-group">
