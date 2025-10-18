@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -636,22 +635,12 @@
         });
 
         // Efek suara sederhana
-        function playAnimalSound() {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.type = 'sine';
-            oscillator.frequency.value = 440;
-            gainNode.gain.value = 0.1;
-            
-            oscillator.start();
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 1);
-            oscillator.stop(audioContext.currentTime + 1);
-        }
+       function playAnimalSound() {
+    // Ganti ".mp3" dengan file suara yang kamu mau
+    const audio = new Audio('Jokowi.mp3');
+    audio.volume = 0.7; // Atur volume (0.1 - 1.0)
+    audio.play().catch(e => console.log('Error playing sound:', e));
+}
 
         // Inisialisasi saat halaman dimuat
         window.addEventListener('DOMContentLoaded', function() {
